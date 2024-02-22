@@ -426,7 +426,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(ARTIFACT_CLOAK,      8,  16);
 		assignItemRect(ARTIFACT_ARMBAND,    16, 16);
-		assignItemRect(ARTIFACT_CAPE,       16, 16);
+		assignItemRect(ARTIFACT_CAPE,       12, 14);
 		assignItemRect(ARTIFACT_TALISMAN,   16, 16);
 		assignItemRect(ARTIFACT_HOURGLASS,  15, 16);
 		assignItemRect(ARTIFACT_TOOLKIT,    16, 16);

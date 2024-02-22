@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.MysteryHeart;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -126,6 +127,8 @@ public enum HeroClass {
 		new AbyssalBottle().collect();
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(10).collect();
+		MysteryHeart hearts = new MysteryHeart();
+		hearts.quantity(5).collect();
 
 		Dungeon.quickslot.setSlot(0, stones);
 	}

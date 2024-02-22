@@ -38,7 +38,7 @@ public class AbyssalInfection extends Buff implements Hero.Doom {
     @Override
     public boolean act() {
 
-        if (Dungeon.level.locked || target.buff(WellFed.class) != null){
+        if (Dungeon.level.locked ){
             spend(INFECTION);
             return true;
         }

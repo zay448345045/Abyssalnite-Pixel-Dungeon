@@ -196,7 +196,11 @@ public class Hero extends Char {
 		
 		visibleEnemies = new ArrayList<>();
 	}
-	
+
+	public void occupyCell(Char ch) {
+		GLog.p(String.valueOf(hero.pos));
+	}
+
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		

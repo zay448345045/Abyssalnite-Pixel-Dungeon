@@ -245,7 +245,7 @@ public class Dungeon {
 		Level level;
 		switch (depth) {
 		case 1:
-			level = new FinalLevel();
+			level = new NewPrisonBossLevel();
 			break;
 		case 2:
 		case 3:

@@ -41,6 +41,7 @@ public class Terrain {
 	public static final int BARRICADE		= 13;
 	public static final int EMPTY_SP		= 14;
 	public static final int HIGH_GRASS		= 15;
+	public static final int SP_RUNE		= 31;
 	public static final int FURROWED_GRASS	= 30;
 
 	public static final int SECRET_DOOR	    = 16;
@@ -91,6 +92,7 @@ public class Terrain {
 		flags[EMPTY_SP]		= flags[EMPTY];
 		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
 		flags[FURROWED_GRASS]= flags[HIGH_GRASS];
+		flags[SP_RUNE]		= flags[EMPTY];
 
 		flags[SECRET_DOOR]  = flags[WALL]  | SECRET;
 		flags[SECRET_TRAP]  = flags[EMPTY] | SECRET;

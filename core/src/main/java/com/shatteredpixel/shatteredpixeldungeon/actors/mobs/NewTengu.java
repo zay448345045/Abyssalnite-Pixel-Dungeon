@@ -53,11 +53,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
@@ -99,6 +101,9 @@ public class NewTengu extends Mob {
 		spend(-cooldown());
 		super.onAdd();
 	}
+
+	public boolean canInven= false;
+	public static boolean Ritualdone= false;
 	
 	@Override
 	public int damageRoll() {
@@ -136,11 +141,16 @@ public class NewTengu extends Mob {
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
 		int hpBracket = 20;
-		
+
+		if (isInvulnerable(src.getClass())){
+			return;
+		}
+
 		int beforeHitHP = HP;
 		super.damage(dmg, src);
 		dmg = beforeHitHP - HP;
-		
+
+
 		//tengu cannot be hit through multiple brackets at a time
 		if ((beforeHitHP/hpBracket - HP/hpBracket) >= 2){
 			HP = hpBracket * ((beforeHitHP/hpBracket)-1) + 1;
@@ -182,6 +192,8 @@ public class NewTengu extends Mob {
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
 		}
+
+
 	}
 	
 	@Override
@@ -220,6 +232,15 @@ public class NewTengu extends Mob {
 		sprite.attack( enemy.pos );
 		spend( attackDelay() );
 		return false;
+	}
+
+	@Override
+	public boolean isInvulnerable(Class effect) {
+		if (canInven == true){
+		jump();
+		}
+		return  canInven;
+
 	}
 	
 	private void jump() {
@@ -311,7 +332,10 @@ public class NewTengu extends Mob {
 		}
 		
 	}
-	
+
+
+
+
 	@Override
 	public void notice() {
 		super.notice();
@@ -340,6 +364,7 @@ public class NewTengu extends Mob {
 	private static final String ABILITIES_USED   = "abilities_used";
 	private static final String ARENA_JUMPS      = "arena_jumps";
 	private static final String ABILITY_COOLDOWN = "ability_cooldown";
+	private static final String CANINVEN = "CANINVEN";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -348,6 +373,7 @@ public class NewTengu extends Mob {
 		bundle.put( ABILITIES_USED, abilitiesUsed );
 		bundle.put( ARENA_JUMPS, arenaJumps );
 		bundle.put( ABILITY_COOLDOWN, abilityCooldown );
+		bundle.put( CANINVEN, canInven );
 	}
 	
 	@Override
@@ -357,6 +383,7 @@ public class NewTengu extends Mob {
 		abilitiesUsed = bundle.getInt( ABILITIES_USED );
 		arenaJumps = bundle.getInt( ARENA_JUMPS );
 		abilityCooldown = bundle.getInt( ABILITY_COOLDOWN );
+		canInven = bundle.getBoolean( CANINVEN );
 		
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);

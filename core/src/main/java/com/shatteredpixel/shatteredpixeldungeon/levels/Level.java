@@ -94,6 +94,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public abstract class Level implements Bundlable {
 	
 	public static enum Feeling {
@@ -507,15 +509,15 @@ public abstract class Level implements Bundlable {
 	public void seal(){
 		if (!locked) {
 			locked = true;
-			Buff.affect(Dungeon.hero, LockedFloor.class);
+			Buff.affect(hero, LockedFloor.class);
 		}
 	}
 
 	public void unseal(){
 		if (locked) {
 			locked = false;
-			if (Dungeon.hero.buff(LockedFloor.class) != null){
-				Dungeon.hero.buff(LockedFloor.class).detach();
+			if (hero.buff(LockedFloor.class) != null){
+				hero.buff(LockedFloor.class).detach();
 			}
 		}
 	}
@@ -585,15 +587,15 @@ public abstract class Level implements Bundlable {
 
 			if (count < Dungeon.level.nMobs()) {
 
-				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
+				PathFinder.buildDistanceMap(hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 
 				Mob mob = Dungeon.level.createMob();
 				mob.state = mob.WANDERING;
 				mob.pos = Dungeon.level.randomRespawnCell( mob );
-				if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
+				if (hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= 12) {
 					GameScene.add( mob );
 					if (Statistics.amuletObtained) {
-						mob.beckon( Dungeon.hero.pos );
+						mob.beckon( hero.pos );
 					}
 					spend(Dungeon.level.respawnCooldown());
 				} else {
@@ -963,7 +965,7 @@ public abstract class Level implements Bundlable {
 		if (!ch.flying){
 			
 			if (pit[ch.pos]){
-				if (ch == Dungeon.hero) {
+				if (ch == hero) {
 					Chasm.heroFall(ch.pos);
 				} else if (ch instanceof Mob) {
 					Chasm.mobFall( (Mob)ch );
@@ -1021,10 +1023,10 @@ public abstract class Level implements Bundlable {
 		if (trap != null) {
 			
 			TimekeepersHourglass.timeFreeze timeFreeze =
-					Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+					hero.buff(TimekeepersHourglass.timeFreeze.class);
 			
 			Swiftthistle.TimeBubble bubble =
-					Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+					hero.buff(Swiftthistle.TimeBubble.class);
 			
 			if (bubble != null){
 				
@@ -1044,8 +1046,8 @@ public abstract class Level implements Bundlable {
 				
 			} else {
 
-				if (Dungeon.hero.pos == cell) {
-					Dungeon.hero.interrupt();
+				if (hero.pos == cell) {
+					hero.interrupt();
 				}
 
 				trap.trigger();
@@ -1095,7 +1097,7 @@ public abstract class Level implements Bundlable {
 		
 		int sense = 1;
 		//Currently only the hero can get mind vision
-		if (c.isAlive() && c == Dungeon.hero) {
+		if (c.isAlive() && c == hero) {
 			for (Buff b : c.buffs( MindVision.class )) {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
@@ -1132,14 +1134,14 @@ public abstract class Level implements Bundlable {
 		}
 
 		//Currently only the hero can get mind vision or awareness
-		if (c.isAlive() && c == Dungeon.hero) {
-			Dungeon.hero.mindVisionEnemies.clear();
+		if (c.isAlive() && c == hero) {
+			hero.mindVisionEnemies.clear();
 			if (c.buff( MindVision.class ) != null) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 
 					if (!fieldOfView[p]){
-						Dungeon.hero.mindVisionEnemies.add(mob);
+						hero.mindVisionEnemies.add(mob);
 					}
 
 				}
@@ -1149,13 +1151,13 @@ public abstract class Level implements Bundlable {
 					if (distance( c.pos, p) == 2) {
 
 						if (!fieldOfView[p]){
-							Dungeon.hero.mindVisionEnemies.add(mob);
+							hero.mindVisionEnemies.add(mob);
 						}
 					}
 				}
 			}
 			
-			for (Mob m : Dungeon.hero.mindVisionEnemies) {
+			for (Mob m : hero.mindVisionEnemies) {
 				for (int i : PathFinder.NEIGHBOURS9) {
 					fieldOfView[m.pos + i] = true;
 				}
@@ -1195,8 +1197,8 @@ public abstract class Level implements Bundlable {
 					}
 					for (Mob m1 : mobs){
 						if (m.fieldOfView[m1.pos] && !fieldOfView[m1.pos] &&
-								!Dungeon.hero.mindVisionEnemies.contains(m1)){
-							Dungeon.hero.mindVisionEnemies.add(m1);
+								!hero.mindVisionEnemies.contains(m1)){
+							hero.mindVisionEnemies.add(m1);
 						}
 					}
 					BArray.or(fieldOfView, m.fieldOfView, fieldOfView);
@@ -1204,7 +1206,7 @@ public abstract class Level implements Bundlable {
 			}
 		}
 
-		if (c == Dungeon.hero) {
+		if (c == hero) {
 			for (Heap heap : heaps.valueList())
 				if (!heap.seen && fieldOfView[heap.pos])
 					heap.seen = true;
@@ -1310,7 +1312,9 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "default_name");
 		}
 	}
-	
+
+
+
 	public String tileDesc( int tile ) {
 		
 		switch (tile) {
