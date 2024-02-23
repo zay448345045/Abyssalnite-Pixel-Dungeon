@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -95,12 +96,12 @@ public class MysteryHeart extends Item {
                 for (Mob boss : Dungeon.level.mobs.toArray(new Mob[0])) {
                     if(boss instanceof NewTengu) {
                         ((NewTengu) boss).canInven = false;
+                        boss.yell( Messages.get(boss, "ritsual"));
                         Buff.affect(boss, Paralysis.class,100f);
                         Buff.affect(boss, DreadPlague.class).set(2f);
                         Buff.affect(boss, Poison.class).set(10f);
                         Buff.affect(boss, Bleeding.class).set(5f);
                         Buff.affect(boss, Slow.class,1f);
-                        Buff.affect(boss, ChaosTime.class,10f);
                         Buff.affect(boss, Weakness.class,100f);
                         Buff.affect(boss, Doom.class);
                         Char ch = Actor.findChar( ritualPos );
@@ -120,6 +121,7 @@ public class MysteryHeart extends Item {
                         } else {
                             boss.pos = ritualPos;
                         }
+                        boss.sprite.place(boss.pos);
                     }
                 }
 

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel;
@@ -133,14 +134,20 @@ public class Bestiary {
 						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class));
-			case 9: case 10:
+			case 9:
 				//1x skeleton, 1x thief, 2x DM-100, 2x guard, 2x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class,
 						Thief.class,
 						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class, Necromancer.class));
-				
+
+			case 10:
+				return new ArrayList<>(Arrays.asList(Wraith.class,
+						Wraith.class,Wraith.class,
+						Wraith.class,Skeleton.class));
+
+
 			// Caves
 			case 11:
 				//3x bat, 1x brute, 1x shaman

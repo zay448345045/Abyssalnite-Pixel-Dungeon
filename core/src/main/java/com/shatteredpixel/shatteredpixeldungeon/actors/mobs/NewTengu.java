@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
@@ -104,6 +105,8 @@ public class NewTengu extends Mob {
 
 	public boolean canInven= false;
 	public static boolean Ritualdone= false;
+
+
 	
 	@Override
 	public int damageRoll() {
@@ -188,8 +191,8 @@ public class NewTengu extends Mob {
 			((NewPrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 			
-			//if tengu has lost a certain amount of hp, jump
-		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
+			//二阶段举行仪式前可进行跳跃
+		} else if (beforeHitHP / hpBracket != HP / hpBracket && HP >= HT/2) {
 			jump();
 		}
 
@@ -203,16 +206,27 @@ public class NewTengu extends Mob {
 
 	@Override
 	public void die( Object cause ) {
-		
+
 		if (Dungeon.hero.subClass == HeroSubClass.NONE) {
-			Dungeon.level.drop( new TomeOfMastery(), pos ).sprite.drop();
+			if (Dungeon.level.solid[pos]){
+				Heap h = Dungeon.level.heaps.get(pos);
+				if (h != null) {
+					for (Item i : h.items) {
+						Dungeon.level.drop(i, pos + Dungeon.level.width());
+					}
+					h.destroy();
+				}
+				Dungeon.level.drop(new TomeOfMastery(), pos + Dungeon.level.width()).sprite.drop(pos);
+			} else {
+				Dungeon.level.drop(new TomeOfMastery(), pos).sprite.drop();
+			}
 		}
 		
 		GameScene.bossSlain();
 		super.die( cause );
 		
 		Badges.validateBossSlain();
-		
+		Dungeon.level.viewDistance = 12;
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
 			beacon.upgrade();
@@ -237,7 +251,8 @@ public class NewTengu extends Mob {
 	@Override
 	public boolean isInvulnerable(Class effect) {
 		if (canInven == true){
-		jump();
+			yell( Messages.get(this, "invun"));
+			jump();
 		}
 		return  canInven;
 

@@ -122,13 +122,13 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-		new PotionOfLevitation().quantity(45).identify().collect();
+		//new PotionOfLevitation().quantity(45).identify().collect();
 		new ScrollOfIdentify().identify();
 		new AbyssalBottle().collect();
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(10).collect();
-		MysteryHeart hearts = new MysteryHeart();
-		hearts.quantity(5).collect();
+		//MysteryHeart hearts = new MysteryHeart();
+		//hearts.quantity(5).collect();
 
 		Dungeon.quickslot.setSlot(0, stones);
 	}
@@ -221,7 +221,8 @@ public enum HeroClass {
 		new ScrollOfLullaby().identify();
 		Dart stones = new Dart();
 		stones.quantity(3).collect();
-		Dungeon.quickslot.setSlot(0, stones);
+		Dungeon.quickslot.setSlot(0, bow);
+		Dungeon.quickslot.setSlot(1, stones);
 	}
 
 	public String title() {

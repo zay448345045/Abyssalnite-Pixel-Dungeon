@@ -20,7 +20,7 @@ public class AbyssalBottle extends Food {
     {
         image = ItemSpriteSheet.ABYSSALBOTTLE;
         energy = 0f;
-        clean = 350f;
+        clean = 380f;
     }
 
     @Override

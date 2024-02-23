@@ -15,12 +15,11 @@ buildscript {
 allprojects {
 
     ext {
-        //记得改包名 和 名字
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = 'Abyssalnite Pixel Dungeon'
+        appPackageName = 'com.tatara.abyssalnitepixeldungeon'
 
         appVersionCode = 464
-        appVersionName = '0.8.2d'
+        appVersionName = '0.1.5'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

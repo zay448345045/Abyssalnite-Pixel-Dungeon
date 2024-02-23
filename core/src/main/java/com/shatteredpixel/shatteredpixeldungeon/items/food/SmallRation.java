@@ -30,7 +30,7 @@ public class SmallRation extends Food {
 	{
 		image = ItemSpriteSheet.OVERPRICED;
 		energy = 100f;
-		clean = 200f;
+		clean = 250f;
 	}
 	
 	@Override

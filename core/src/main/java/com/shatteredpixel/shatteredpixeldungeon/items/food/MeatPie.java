@@ -35,7 +35,7 @@ public class MeatPie extends Food {
 	{
 		image = ItemSpriteSheet.MEAT_PIE;
 		energy = 450f;
-		clean =300f;
+		clean =500f;
 	}
 	
 	@Override

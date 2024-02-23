@@ -39,7 +39,7 @@ public class FrozenCarpaccio extends Food {
 	{
 		image = ItemSpriteSheet.CARPACCIO;
 		energy = 120f;
-		clean = 0f;
+		clean = 50f;
 	}
 	
 	@Override

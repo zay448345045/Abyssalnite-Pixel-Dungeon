@@ -189,8 +189,8 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 2000;
-		STR = STARTING_STR+100;
+		HP = HT = 20;
+		STR = STARTING_STR;
 
 		belongings = new Belongings( this );
 		
@@ -326,10 +326,10 @@ public class Hero extends Char {
 		Buff.affect( this, Hunger.class );
 		Buff.affect(this, AbyssalInfection.class);
 		//打包前记得注释掉下面的东西！
-		Buff.affect(this,MindVision.class,2000f);
-		Buff.affect(this, MaxGuard.class);
-		Buff.affect(this, Haste.class,20000f);
-		Buff.affect(this, Adrenaline.class,20000f);
+//		Buff.affect(this,MindVision.class,2000f);
+//		Buff.affect(this, MaxGuard.class);
+//		Buff.affect(this, Haste.class,20000f);
+//		Buff.affect(this, Adrenaline.class,20000f);
 	}
 	
 	public int tier() {
@@ -1498,7 +1498,10 @@ public class Hero extends Char {
 
 			//ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
 			PotionOfHealing.cure(this);
+			hero.buff( AbyssalInfection.class ).cureinfc( AbyssalInfection.HARDINFECTION );
 			Buff.detach(this, Paralysis.class);
+			Buff.affect(hero, MaxGuard.class);
+
 			spend(-cooldown());
 
 			new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);

@@ -47,7 +47,7 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = 300f;
-	public float clean = 20f;
+	public float clean = 35f;
 	public String message = Messages.get(this, "eat_msg");
 	
 	{

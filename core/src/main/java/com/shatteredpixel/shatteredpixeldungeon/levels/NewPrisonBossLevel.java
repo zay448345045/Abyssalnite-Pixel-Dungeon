@@ -24,12 +24,16 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MaxGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
@@ -71,6 +75,11 @@ import com.watabou.utils.Rect;
 import java.util.ArrayList;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+import static com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EMPTY_DECO;
+import static com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.PEDESTAL;
+import static com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.SP_RUNE;
+import static com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.WELL;
 
 public class NewPrisonBossLevel extends Level {
 
@@ -157,10 +166,13 @@ public class NewPrisonBossLevel extends Level {
 		return Assets.Environment.WATER_PRISON;
 	}
 
+	public boolean canspawnmob = false;
+
 	private static final String STATE	        = "state";
 	private static final String TENGU	        = "tengu";
 	private static final String STORED_ITEMS    = "storeditems";
 	private static final String TRIGGERED       = "triggered";
+	private static final String CANSPAWNMOB       = "canspawnmob";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -169,6 +181,7 @@ public class NewPrisonBossLevel extends Level {
 		bundle.put( TENGU, tengu );
 		bundle.put( STORED_ITEMS, storedItems);
 		bundle.put(TRIGGERED, triggered );
+		bundle.put(CANSPAWNMOB, canspawnmob);
 	}
 
 
@@ -209,6 +222,8 @@ public class NewPrisonBossLevel extends Level {
 		return true;
 	}
 
+	public int ritualalready = Random.NormalIntRange(0, 3);
+	public int ritualneeded = (4-ritualalready);
 	private static final int ENTRANCE_POS = 10 + 4*32;
 	private static final Rect entranceRoom = new Rect(8, 2, 13, 8);
 	private static final Rect startHallway = new Rect(9, 7, 12, 24);
@@ -279,6 +294,8 @@ public class NewPrisonBossLevel extends Level {
 
 	private static final Rect arena = new Rect(3, 1, 18, 16);
 
+	private static final Rect ruozhi = new Rect(1, 1, 30, 30);
+
 	private void setMapArena(){
 		exit = entrance = 0;
 
@@ -300,7 +317,8 @@ public class NewPrisonBossLevel extends Level {
 	private static final int M = Terrain.WALL_DECO;
 	private static int B = Terrain.PEDESTAL;
 	private static int O = Terrain.EMPTY_DECO;
-	private static int R = Terrain.SP_RUNE;
+	private static int R = SP_RUNE;
+	private static int N = WELL;
 
 	private static final Point endStart = new Point( startHallway.left+2, startHallway.top+2);
 	private static final Point levelExit = new Point( endStart.x+12, endStart.y+6);
@@ -344,7 +362,7 @@ public class NewPrisonBossLevel extends Level {
 					W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, W, e, e, e, W, W, W, W,
 					W, e, e, W, W, D, W, W, e, e, e, e, W, e, e, e, W, e, e, e, e, W, W, D, W, W, e, e, W, W, W, W,
 					W, e, W, W, e, e, e, W, W, e, e, e, e, e, R, e, e, e, e, e, W, W, e, e, e, W, W, e, W, W, W, W,
-					W, e, W, W, e, B, e, W, W, e, e, e, e, R, B, R, e, e, e, e, W, W, e, B, e, W, W, e, W, W, W, W,
+					W, e, W, W, e, B, e, W, W, e, e, e, e, R, N, R, e, e, e, e, W, W, e, B, e, W, W, e, W, W, W, W,
 					W, e, W, W, e, e, e, W, W, e, e, e, e, e, R, e, e, e, e, e, W, W, e, e, e, W, W, e, W, W, W, W,
 					W, e, e, W, W, D, W, W, e, e, e, e, W, e, e, e, W, e, e, e, e, W, W, D, W, W, e, e, W, W, W, W,
 					W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, W, e, e, e, W, W, W, W,
@@ -446,12 +464,12 @@ public class NewPrisonBossLevel extends Level {
 		Dungeon.observe();
 	}
 
-//	@Override
-//	public Group addVisuals() {
-//		super.addVisuals();
-//		PrisonLevel.addPrisonVisuals(this, visuals);
-//		return visuals;
-//	}
+	@Override
+	public Group addVisuals() {
+		super.addVisuals();
+		PrisonLevel.addPrisonVisuals(this, visuals);
+		return visuals;
+	}
 
 	public void progress(){
 		switch (state){
@@ -537,6 +555,60 @@ public class NewPrisonBossLevel extends Level {
 				}
 				cleanMapState();
 
+				canspawnmob = true;
+
+				ArrayList<Item> items1 = new ArrayList<>();
+				items1.add(new MysteryHeart());
+				// 计数器
+				for (Item item : items1){
+					int Lpos;
+					do {
+						Lpos = level.pointToCell(Random.element(ruozhi.getPoints()));
+					} while (level.map[Lpos] != SP_RUNE || level.heaps.get(Lpos) != null);
+					Heap h = level.drop(item, Lpos);
+					h.setHauntedIfCursed();
+					h.type = Heap.Type.HEAP;
+				}
+
+				ArrayList<Item> items2 = new ArrayList<>();
+				items2.add(new MysteryHeart());
+				// 计数器
+				for (Item item : items2){
+					int Lpos;
+					do {
+						Lpos = level.pointToCell(Random.element(ruozhi.getPoints()));
+					} while (level.map[Lpos] != PEDESTAL || level.heaps.get(Lpos) != null);
+					Heap h = level.drop(item, Lpos);
+					h.setHauntedIfCursed();
+					h.type = Heap.Type.HEAP;
+				}
+
+				ArrayList<Item> items3 = new ArrayList<>();
+				items3.add(new MysteryHeart());
+				// 计数器
+				for (Item item : items3){
+					int Lpos;
+					do {
+						Lpos = level.pointToCell(Random.element(ruozhi.getPoints()));
+					} while (level.map[Lpos] != PEDESTAL || level.heaps.get(Lpos) != null);
+					Heap h = level.drop(item, Lpos);
+					h.setHauntedIfCursed();
+					h.type = Heap.Type.HEAP;
+				}
+
+				ArrayList<Item> items4 = new ArrayList<>();
+				items4.add(new MysteryHeart());
+				for (Item item : items4){
+					int Lpos;
+					do {
+						Lpos = level.pointToCell(Random.element(ruozhi.getPoints()));
+					} while (level.map[Lpos] != PEDESTAL || level.heaps.get(Lpos) != null);
+					Heap h = level.drop(item, Lpos);
+					h.setHauntedIfCursed();
+					h.type = Heap.Type.HEAP;
+				}
+
+
 				HeartRitualMarker vis = new HeartRitualMarker();
 				Point c = new Point(14,14);
 				vis.pos(c.x - 1, c.y - 1);
@@ -546,7 +618,10 @@ public class NewPrisonBossLevel extends Level {
 
 				MysteryHeart.ritualPos = 462;
 
-
+				Dungeon.level.viewDistance = 8;
+				if (Dungeon.hero.buff(Light.class) == null){
+					Dungeon.hero.viewDistance = 4;
+				}
 
 				Dungeon.hero.interrupt();
 				Dungeon.hero.pos = 334;
@@ -555,10 +630,21 @@ public class NewPrisonBossLevel extends Level {
 				Camera.main.snapTo(Dungeon.hero.sprite.center());
 
 
+
 				tengu.state = tengu.HUNTING;
 				tengu.pos = (arena.left + arena.width()/2) + width()*(arena.top+2);
 				GameScene.add(tengu);
 				tengu.notice();
+
+
+				tengu.pos = 462;
+				tengu.sprite.place(tengu.pos);
+				Buff.affect(tengu, MaxGuard.class);
+				for (Mob boss : Dungeon.level.mobs.toArray(new Mob[0])) {
+					if (boss instanceof NewTengu) {
+						((NewTengu) boss).canInven = true;
+					}
+				}
 
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.Sounds.BLAST);
@@ -576,15 +662,6 @@ public class NewPrisonBossLevel extends Level {
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 				Camera.main.snapTo(Dungeon.hero.sprite.center());
 
-
-				tengu.pos = pointToCell(tenguCellCenter);
-				tengu.sprite.place(tengu.pos);
-
-				for (Mob boss : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (boss instanceof NewTengu) {
-						((NewTengu) boss).canInven = true;
-					}
-				}
 
 				//remove all mobs, but preserve allies
 				ArrayList<Mob> allies = new ArrayList<>();
@@ -606,9 +683,9 @@ public class NewPrisonBossLevel extends Level {
 					if (m.sprite != null) m.sprite.place(m.pos);
 					mobs.add(m);
 				}
-
+				Dungeon.level.viewDistance = 8;
 				tengu.die(hero);
-
+				canspawnmob = false;
 				clearEntities(tenguCell);
 				cleanMapState();
 
@@ -627,12 +704,33 @@ public class NewPrisonBossLevel extends Level {
 		}
 	}
 
-
+	private int roundCounter = 0;
 	private boolean[] triggered = new boolean[]{false, false, false, false};
 
 	@Override
 	public void occupyCell(Char ch) {
 		super.occupyCell(ch);
+
+		float count = 0;
+
+		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
+			if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.BOSS)) {
+				count += mob.spawningWeight();
+			}
+		}
+		roundCounter++;
+		if (roundCounter >= 3) {
+			roundCounter = 0; // 重置计数器
+
+
+			// 生成一个随机怪物
+			if (count < 16 && canspawnmob == true) {
+				Mob mob = Dungeon.level.createMob();
+				mob.state = mob.WANDERING;
+				mob.pos = pointToCell(Random.element(ruozhi.getPoints()));
+				GameScene.add(mob);
+			}
+		}
 
 		if (ch == hero){
 			switch (state){
@@ -651,8 +749,7 @@ public class NewPrisonBossLevel extends Level {
 			}
 
 		}
-		GLog.p(String.valueOf(hero.pos));
-		GLog.w(",");
+
 	}
 
 	@Override
@@ -670,7 +767,7 @@ public class NewPrisonBossLevel extends Level {
 		if (item != null) {
 			drop( item, randomRespawnCell( null ) ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
-		drop(new IronKey(1), randomPrisonCellPos());
+		drop(new IronKey(10), randomPrisonCellPos());
 	}
 
 	private int randomPrisonCellPos(){
