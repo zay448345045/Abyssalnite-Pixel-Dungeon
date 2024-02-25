@@ -662,6 +662,9 @@ public class NewPrisonBossLevel extends Level {
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 				Camera.main.snapTo(Dungeon.hero.sprite.center());
 
+				tengu.pos = pointToCell(tenguCellCenter);
+				tengu.sprite.place(tengu.pos);
+
 
 				//remove all mobs, but preserve allies
 				ArrayList<Mob> allies = new ArrayList<>();
@@ -671,10 +674,11 @@ public class NewPrisonBossLevel extends Level {
 						mobs.remove(m);
 					}
 				}
-
-
-
 				setMapEnd();
+				tengu.die(Dungeon.hero);
+
+				clearEntities(tenguCell);
+				cleanMapState();
 
 				for (Mob m : allies){
 					do{
@@ -683,8 +687,8 @@ public class NewPrisonBossLevel extends Level {
 					if (m.sprite != null) m.sprite.place(m.pos);
 					mobs.add(m);
 				}
-				Dungeon.level.viewDistance = 8;
-				tengu.die(hero);
+
+
 				canspawnmob = false;
 				clearEntities(tenguCell);
 				cleanMapState();

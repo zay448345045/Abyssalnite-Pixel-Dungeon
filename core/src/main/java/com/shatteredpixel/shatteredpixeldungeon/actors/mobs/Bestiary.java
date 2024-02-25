@@ -143,9 +143,9 @@ public class Bestiary {
 						Necromancer.class, Necromancer.class));
 
 			case 10:
-				return new ArrayList<>(Arrays.asList(Wraith.class,
-						Wraith.class,Wraith.class,
-						Wraith.class,Skeleton.class));
+				return new ArrayList<>(Arrays.asList(FakeWraith.class,
+							FakeWraith.class,FakeWraith.class,
+						FakeWraith.class,Skeleton.class));
 
 
 			// Caves

@@ -467,9 +467,7 @@ public class DwarfKing extends Mob {
 		}
 
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
-			if (mob instanceof DKGolem || mob instanceof  Golem) {
-				mob.die( cause );
-			}
+			mob.die( cause );
 		}
 
 		Badges.validateBossSlain();
