@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
+ndkVersion "20.0.5594570" // e.g.,  ndkVersion "21.3.6528147"
 
     sourceSets.main.assets.srcDirs = [new File(project(':core').projectDir, "/src/main/assets")]
 
