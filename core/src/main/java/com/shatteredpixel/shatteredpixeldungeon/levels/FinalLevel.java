@@ -216,6 +216,10 @@ public class FinalLevel extends Level{
     };
 
 
+    public static int getWidth() {
+        return WIDTH;
+    }
+
     @Override
     protected boolean build() {
         setSize(WIDTH, HEIGHT);

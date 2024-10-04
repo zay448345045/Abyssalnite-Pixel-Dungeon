@@ -98,9 +98,12 @@ public class Bestiary {
 						Snake.class));
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
-				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
-						Snake.class,
-						Gnoll.class, Gnoll.class));
+				return new ArrayList<>(Arrays.asList(
+						Lavastone.class,GroundSpore.class,GroundSpore.class,Lavastone.class
+						//Rat.class, Rat.class,
+						//Snake.class,
+						//Gnoll.class, Gnoll.class
+				));
 			case 3:
 				//1x rat, 1x snake, 3x gnoll, 1x swarm, 1x crab
 				return new ArrayList<>(Arrays.asList(Rat.class,
